@@ -1,0 +1,26 @@
+string sub(string a, string b) {
+	if (!cmp(a, b))return "-" + sub(b, a);
+	reverse(a.begin(), a.end());
+	reverse(b.begin(), b.end());
+	string res;
+	int i = 0;
+	int borrow = 0;
+	while (i < a.size()) {
+		int na = a[i] - '0' - borrow;
+		int nb = i < b.size() ? b[i] - 0 : 0;
+		borrow = 0;
+		if (na < nb) {
+			na += 10;
+			borrow = 1;
+		}
+		res.push_back(na - nb + '0');
+		i++;
+	}
+	reverse(res.begin(), res.end());
+	int pos = 0;
+	while (res[pos] == '0'||pos<res.size()) {
+		pos++;
+	}
+	if (pos == res.size())return "0";
+	return res.substr(pos);
+}
