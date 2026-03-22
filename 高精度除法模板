@@ -1,0 +1,15 @@
+string div(string a, int b) {
+	string res;
+	int reminder=0;
+	for (char c: a) {
+		reminder = reminder * 10 + c - '0';
+		res.push_back(reminder / b+'0');
+		reminder = reminder % b;
+	}
+	int pos = 0;
+	while (pos < res.size() && res[pos] == '0') {
+		pos++;
+	}
+	if (pos == res.size())return "0";
+	return res.substr(pos);
+}
