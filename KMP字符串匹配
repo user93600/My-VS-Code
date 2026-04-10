@@ -1,0 +1,47 @@
+//关键词识别：字符串匹配、子串查找、模式串、重复匹配、长字符串匹配、循环节，使用KMP算法
+//KMP字符串匹配
+const int MAXN = 1e5 + 5;
+int nxt[MAXN];
+//目标：在s中找有几个p
+//1.计算字串p的next值（用来快速遍历）
+void get_next(string p) {
+	int m = p.size();
+	nxt[0] = 0;
+	//i后缀指针 j前缀指针
+	for (int i = 1, j = 0; i < m; i++) {
+    //不匹配回退j（不匹配回退到0止）
+		while (j && p[i] != p[j]) {
+			j = nxt[j - 1];
+		}
+    //匹配则j++（只加一次）
+		if (p[i] == p[j]) {
+			j++;
+		}
+    //记录字串p[i]位置上的next值
+		nxt[i] = j;
+	}
+}
+//2.kmp核心，目标串s，字串p
+int kmp(string s, string p) {
+	int n = s.size();
+	int m = p.size();
+	get_next(p);
+  //cnt返回出现次数
+	int cnt = 0;
+ //i是s的指针 j是p的指针
+	for (int i = 0, j = 0; i < n; i++) {
+    //不匹配则回退
+		while (j && s[i] != p[j]) {
+			j = nxt[j - 1];
+		}
+		if (s[i] == p[j]) {
+			j++;
+		}
+    //达到后也回退（一次）
+		if (j == m) {
+			cnt++;
+			j = nxt[j - 1];
+		}
+	}
+	return cnt;
+}
